@@ -40,23 +40,57 @@ void delayLong() {
 	_delay_cycles(1790);
 }
 
+void SPISend(char byteToSend) {
+	volatile char readByte;
+
+	SS_Lo();
+
+	UCB0TXBUF = byteToSend;
+
+	while (!(UCB0RXIFG & IFG2)) {
+		// wait until you've received a byte
+	}
+
+	readByte = UCB0RXBUF;
+
+	SS_Hi();
+}
+
 // Writes a byte to the LCD
 void LCD_Write_8(char byteToSend) {
 
-	    unsigned char sendByte = byteToSend;
+	unsigned char sendByte = byteToSend;
 
-	    sendByte &= 0xF0;
+	sendByte &= ~0xF0;						// Clear the bottom of the byte
 
-	    sendByte = sendByte >> 4;               // rotate to the right 4 times
+	sendByte = sendByte >> 4;               // rotate to the right 4 times
 
-	    LCD_write_4(sendByte);
+	LCD_write_4(sendByte);
 
-	    sendByte = byteToSend;
+	sendByte = byteToSend;
 
-	    sendByte &= 0x0F;
+	sendByte &= 0x0F;						// Clear the top of the byte
 
-	    LCD_write_4(sendByte);
+	LCD_write_4(sendByte);
 
+}
+
+void LCD_Write_4(char nibbleToSend) {
+	unsigned char sendNibble = nibbleToSend;
+	sendNibble &= 0x0F; // Clear the top of the byte
+	sendNibble |= LCDCON;
+
+	sendNibble &= 0x7F;
+	SPISend();
+	delayShort();
+
+	sendNibble |= 0x80;
+	SPISend();
+	delayShort();
+
+	sendNibble &= 0x7F;
+	SPISend();
+	delayShort();
 }
 
 void initLCD() {
