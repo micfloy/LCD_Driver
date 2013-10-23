@@ -40,6 +40,25 @@ void delayLong() {
 	_delay_cycles(1790);
 }
 
+// Writes a byte to the LCD
+void LCD_Write_8(char byteToSend) {
+
+	    unsigned char sendByte = byteToSend;
+
+	    sendByte &= 0xF0;
+
+	    sendByte = sendByte >> 4;               // rotate to the right 4 times
+
+	    LCD_write_4(sendByte);
+
+	    sendByte = byteToSend;
+
+	    sendByte &= 0x0F;
+
+	    LCD_write_4(sendByte);
+
+}
+
 void initLCD() {
 
 }
