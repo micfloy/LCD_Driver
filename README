@@ -1,0 +1,2 @@
+This is a basic device driver for an LCD display.
+It will allow the user to write to the bottom and top lines of the display and scroll the message across the line.
