@@ -149,3 +149,11 @@ void LCDclear()
     writeCommandByte(1);
 }
 
+void setCursorLine1() {
+	writeCommandByte(0x02);
+}
+
+void setCursorLine2() {
+	writeCommandByte(0xC0);
+}
+

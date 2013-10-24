@@ -14,7 +14,9 @@ void initLCD();
 
 void LCDClear();
 
-void changeLine();
+void setCursorLine1();
+
+void setCursorLine2();
 
 void writeChar(char singleChar);
 

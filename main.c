@@ -1,7 +1,7 @@
 /*
  * This be a header.  Argh!
  */
-
+#include "LCD_Driver.h"
 #include <msp430.h> 
 
 /*
