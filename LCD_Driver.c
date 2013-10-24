@@ -5,13 +5,14 @@
  *      Author: C15Michael.Bentley
  */
 #include "LCD_Driver.h"
+#include <msp430.h>
 
 //
 void initSPI() {
 	UCB0CTL1 |= UCSWRST;
 	UCB0CTL0 |= UCCKPH | UCMST | UCSYNC;
 
-	UCB0CTL1 |= UCSEL1;
+	UCB0CTL1 |= UCSSEL1;
 	UCB0STAT |= UCLISTEN;
 
 	P1SEL |= BIT5 | BIT6 | BIT7;
