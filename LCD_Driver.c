@@ -81,7 +81,7 @@ void LCD_write_4(char nibbleToSend) {
 }
 
 // Writes a byte to the LCD
-void LCD_Write_8(char byteToSend) {
+void LCD_write_8(char byteToSend) {
 
 	unsigned char sendByte = byteToSend;
 
@@ -99,8 +99,49 @@ void LCD_Write_8(char byteToSend) {
 
 }
 
+void writeCommandNibble(char comNibble)
+{
+    LCDCON &= ~RS_MASK;
+    LCD_write_4(comNibble);
+    delayLong();
+}
+
+void writeCommandByte(char comByte)
+{
+    LCDCON &= ~RS_MASK;
+    LCD_write_8(comByte);
+    delayLong();
+}
+
+void writeDataByte(char dataByte)
+{
+    LCDCON |= RS_MASK;
+    LCD_write_8(dataByte);
+    delayLong();
+}
 
 void initLCD() {
+    writeCommandNibble(0x03);
 
+    writeCommandNibble(0x03);
+
+    writeCommandNibble(0x03);
+
+    writeCommandNibble(0x02);
+
+    writeCommandByte(0x28);
+
+    writeCommandByte(0x0C);
+
+    writeCommandByte(0x01);
+
+    writeCommandByte(0x06);
+
+    writeCommandByte(0x01);
+
+    writeCommandByte(0x02);
+
+    SPISend(0);
+    delayShort();
 }
 
