@@ -61,6 +61,25 @@ void SPISend(char byteToSend) {
 	SS_Hi();
 }
 
+//
+void LCD_write_4(char nibbleToSend) {
+	unsigned char sendNibble = nibbleToSend;
+	sendNibble &= 0x0F; // Clear the top of the byte
+	sendNibble |= LCDCON;
+
+	sendNibble &= 0x7F; // Sets E to low
+	SPISend(sendNibble);
+	delayShort();
+
+	sendNibble |= 0x80; // Sets E to high
+	SPISend(sendNibble);
+	delayShort();
+
+	sendNibble &= 0x7F; // Sets E to low
+	SPISend(sendNibble);
+	delayShort();
+}
+
 // Writes a byte to the LCD
 void LCD_Write_8(char byteToSend) {
 
@@ -80,23 +99,6 @@ void LCD_Write_8(char byteToSend) {
 
 }
 
-void LCD_Write_4(char nibbleToSend) {
-	unsigned char sendNibble = nibbleToSend;
-	sendNibble &= 0x0F; // Clear the top of the byte
-	sendNibble |= LCDCON;
-
-	sendNibble &= 0x7F; // Sets E to low
-	SPISend(sendNibble);
-	delayShort();
-
-	sendNibble |= 0x80; // Sets E to high
-	SPISend(sendNibble);
-	delayShort();
-
-	sendNibble &= 0x7F; // Sets E to low
-	SPISend(sendNibble);
-	delayShort();
-}
 
 void initLCD() {
 
