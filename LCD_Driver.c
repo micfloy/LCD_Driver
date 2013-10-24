@@ -79,18 +79,18 @@ void LCD_Write_8(char byteToSend) {
 void LCD_Write_4(char nibbleToSend) {
 	unsigned char sendNibble = nibbleToSend;
 	sendNibble &= 0x0F; // Clear the top of the byte
-	sendNibble |= LCDCON;
+	sendNibble |= &LCDCON;
 
 	sendNibble &= 0x7F;
-	SPISend();
+	SPISend(sendNibble);
 	delayShort();
 
 	sendNibble |= 0x80;
-	SPISend();
+	SPISend(sendNibble);
 	delayShort();
 
 	sendNibble &= 0x7F;
-	SPISend();
+	SPISend(sendNibble);
 	delayShort();
 }
 
