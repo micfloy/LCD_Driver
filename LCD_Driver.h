@@ -12,7 +12,7 @@ void initSPI();
 
 void initLCD();
 
-void LCDClear();
+void LCDclear();
 
 void setCursorLine1();
 
