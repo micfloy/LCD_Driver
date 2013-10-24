@@ -7,6 +7,8 @@
 #include "LCD_Driver.h"
 #include <msp430.h>
 
+#define RS_MASK 0x40;
+
 //
 void initSPI() {
 	UCB0CTL1 |= UCSWRST;
@@ -79,7 +81,7 @@ void LCD_Write_8(char byteToSend) {
 void LCD_Write_4(char nibbleToSend) {
 	unsigned char sendNibble = nibbleToSend;
 	sendNibble &= 0x0F; // Clear the top of the byte
-	sendNibble |= &LCDCON;
+	sendNibble |= RS_MASK;
 
 	sendNibble &= 0x7F;
 	SPISend(sendNibble);
