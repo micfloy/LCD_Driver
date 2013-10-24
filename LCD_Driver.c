@@ -14,15 +14,14 @@ unsigned char LCDCON;
 //
 void initSPI() {
 	UCB0CTL1 |= UCSWRST;
-	UCB0CTL0 |= UCCKPH | UCMST | UCSYNC;
+	UCB0CTL0 |= UCCKPH | UCMST | UCSYNC | UCMSB;
 
 	UCB0CTL1 |= UCSSEL1;
-	UCB0STAT |= UCLISTEN;
 
 	P1SEL |= BIT5 | BIT6 | BIT7;
 	P1SEL2 |= BIT5 | BIT6 | BIT7;
 
-	UCB0CTL1 &= UCSWRST;
+	UCB0CTL1 &= ~UCSWRST;
 
 }
 void SS_Hi() {
@@ -32,7 +31,7 @@ void SS_Hi() {
 
 void SS_Lo() {
 	P1DIR |= BIT0;
-	P1OUT &= BIT0;
+	P1OUT &= ~BIT0;
 }
 
 // This delay is approx 40.5us for the native clock speed of 1.085MHz
@@ -85,7 +84,7 @@ void LCD_write_8(char byteToSend) {
 
 	unsigned char sendByte = byteToSend;
 
-	sendByte &= ~0xF0;						// Clear the bottom of the byte
+	sendByte &= 0xF0;						// Clear the bottom of the byte
 
 	sendByte = sendByte >> 4;               // rotate to the right 4 times
 
@@ -143,5 +142,10 @@ void initLCD() {
 
     SPISend(0);
     delayShort();
+}
+
+void LCDclear()
+{
+    writeCommandByte(1);
 }
 
