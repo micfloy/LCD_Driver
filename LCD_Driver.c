@@ -9,6 +9,8 @@
 
 #define RS_MASK 0x40;
 
+unsigned char LCDCON;
+
 //
 void initSPI() {
 	UCB0CTL1 |= UCSWRST;
@@ -81,17 +83,17 @@ void LCD_Write_8(char byteToSend) {
 void LCD_Write_4(char nibbleToSend) {
 	unsigned char sendNibble = nibbleToSend;
 	sendNibble &= 0x0F; // Clear the top of the byte
-	sendNibble |= RS_MASK;
+	sendNibble |= LCDCON;
 
-	sendNibble &= 0x7F;
+	sendNibble &= 0x7F; // Sets E to low
 	SPISend(sendNibble);
 	delayShort();
 
-	sendNibble |= 0x80;
+	sendNibble |= 0x80; // Sets E to high
 	SPISend(sendNibble);
 	delayShort();
 
-	sendNibble &= 0x7F;
+	sendNibble &= 0x7F; // Sets E to low
 	SPISend(sendNibble);
 	delayShort();
 }
