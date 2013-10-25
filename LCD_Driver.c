@@ -168,9 +168,10 @@ void writeChar(char asciiChar) {
 }
 
 void writeString(char *string) {
-	while (string != 0) {
-		writeChar(*string);
-		string++;
+	char *current = string;
+	while (*current != 0) {
+		writeChar(*current);
+		current++;
 	}
 }
 
@@ -201,7 +202,7 @@ void scrollString(char *string1, char *string2, int screenSizeInChars) {
 		current1 = printFromPosition(string1, current1, screenSizeInChars);
 		setCursorLine2();
 		current2 = printFromPosition(string2, current2, screenSizeInChars);
-		for(i = 0; i < 500; i++) {
+		for(i = 0; i < 300; i++) {
 			delayLong();
 		}
 	}

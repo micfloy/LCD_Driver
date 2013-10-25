@@ -5,7 +5,7 @@
 #include <msp430.h> 
 #include "buttons/button.h"
 
-#define LCD_DISP_SIZE 8
+#define LCD_SIZE 8
 
 /*
  * main.c
@@ -13,14 +13,45 @@
 int main(void) {
 	WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
 
-	char* string1 = "ECE382 is my favorite class!";
-	char* string2 = "Stop.  Hammertime!";
+	char* string1 = "Message?";
+	char* string2 = "Press123";
+	char* string3 = "ECE382 is my favorite class!";
+	char* message1 = "We found a witch.  Can we burn her?";
+	char* message2 = "Insert cash or select payment type.";
+	char* message3 = "All your base are belong to us.";
+
+	char buttons[] = {BIT1, BIT2, BIT3};
 
 	initSPI();
 	initLCD();
 	LCDclear();
 
-	scrollString(string1, string2, LCD_DISP_SIZE);
+	writeString(string1);
+	setCursorLine2();
+	writeString(string2);
+
+	configureP1PinAsButton(BIT1|BIT2|BIT3);
+
+	char buttonPressed = pollP1Buttons(buttons, 3);
+	LCDclear();
+
+	switch (buttonPressed) {
+	            case BIT1:
+
+	            	scrollString(string3, message1, LCD_SIZE);
+	                waitForP1ButtonRelease(BIT1);
+
+	                break;
+	            case BIT2:
+	            	scrollString(string3, message2, LCD_SIZE);
+	                waitForP1ButtonRelease(BIT2);
+	                break;
+	            case BIT3:
+	            	scrollString(string3, message3, LCD_SIZE);
+	                waitForP1ButtonRelease(BIT3);
+	                break;
+	        }
+
 
 	return 0;
 }
