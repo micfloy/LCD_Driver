@@ -9,7 +9,7 @@
 
 #define RS_MASK 0x40;
 
-unsigned char LCDCON;
+char LCDCON;
 
 void SS_Hi();
 void SS_Lo();
@@ -29,6 +29,7 @@ void initSPI() {
 	SS_Hi();
 
 }
+
 void SS_Hi() {
 	P1DIR |= BIT0;
 	P1OUT |= BIT0;
@@ -49,7 +50,7 @@ void delayLong() {
 	_delay_cycles(1790);
 }
 
-void SPISend(char byteToSend) {
+void SPIsend(char byteToSend) {
 	volatile char readByte;
 
 	SS_Lo();
@@ -68,19 +69,19 @@ void SPISend(char byteToSend) {
 //
 void LCD_write_4(char nibbleToSend) {
 	unsigned char sendNibble = nibbleToSend;
-	sendNibble &= 0x0F; // Clear the top of the byte
+	sendNibble &= 0x0F; 					// Clear the top of the byte
 	sendNibble |= LCDCON;
 
-	sendNibble &= 0x7F; // Sets E to low
-	SPISend(sendNibble);
+	sendNibble &= 0x7F; 					// Sets E to low
+	SPIsend(sendNibble);
 	delayShort();
 
-	sendNibble |= 0x80; // Sets E to high
-	SPISend(sendNibble);
+	sendNibble |= 0x80; 					// Sets E to high
+	SPIsend(sendNibble);
 	delayShort();
 
-	sendNibble &= 0x7F; // Sets E to low
-	SPISend(sendNibble);
+	sendNibble &= 0x7F; 					// Sets E to low
+	SPIsend(sendNibble);
 	delayShort();
 }
 
@@ -145,13 +146,14 @@ void initLCD() {
 
     writeCommandByte(0x02);
 
-    SPISend(0);
+    SPIsend(0);
     delayShort();
 }
 
 void LCDclear()
 {
     writeCommandByte(1);
+    delayLong();
 }
 
 void setCursorLine1() {
