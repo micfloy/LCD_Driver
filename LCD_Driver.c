@@ -11,6 +11,9 @@
 
 unsigned char LCDCON;
 
+void SS_Hi();
+void SS_Lo();
+
 //
 void initSPI() {
 	UCB0CTL1 |= UCSWRST;
@@ -22,6 +25,8 @@ void initSPI() {
 	P1SEL2 |= BIT5 | BIT6 | BIT7;
 
 	UCB0CTL1 &= ~UCSWRST;
+
+	SS_Hi();
 
 }
 void SS_Hi() {
