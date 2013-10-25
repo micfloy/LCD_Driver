@@ -188,7 +188,7 @@ char * printFromPosition(char * start, char * current, int screenSizeInChars) {
 		}
 	}
 
-	return current++;
+	return ++current;
 
 }
 
@@ -201,7 +201,7 @@ void scrollString(char *string1, char *string2, int screenSizeInChars) {
 		current1 = printFromPosition(string1, current1, screenSizeInChars);
 		setCursorLine2();
 		current2 = printFromPosition(string2, current2, screenSizeInChars);
-		for(i = 0; i < 1500; i++) {
+		for(i = 0; i < 500; i++) {
 			delayLong();
 		}
 	}
