@@ -21,8 +21,12 @@ void initSPI() {
 
 	UCB0CTL1 |= UCSSEL1;
 
-	P1SEL |= BIT5 | BIT6 | BIT7;
-	P1SEL2 |= BIT5 | BIT6 | BIT7;
+	P1SEL |= BIT5;
+	P1SEL2 |= BIT5;
+	P1SEL |= BIT6;
+	P1SEL2 |= BIT6;
+	P1SEL |= BIT7;
+	P1SEL2 |= BIT7;
 
 	UCB0CTL1 &= ~UCSWRST;
 
@@ -153,7 +157,6 @@ void initLCD() {
 void LCDclear()
 {
     writeCommandByte(1);
-    delayLong();
 }
 
 void setCursorLine1() {
@@ -162,5 +165,16 @@ void setCursorLine1() {
 
 void setCursorLine2() {
 	writeCommandByte(0xC0);
+}
+
+void writeChar(char asciiChar) {
+	writeDataByte(asciiChar);
+}
+
+void writeString(char *string) {
+	while(*string != 0) {
+		writeChar(*string);
+		string++;
+	}
 }
 

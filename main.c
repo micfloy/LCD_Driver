@@ -9,10 +9,13 @@
  */
 int main(void) {
     WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
-	
+
+    char* string= "ECE382 is my favorite class!";
     initSPI();
     initLCD();
     LCDclear();
+
+    writeString(string);
 
 	while(1) {
 
