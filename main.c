@@ -3,21 +3,21 @@
  */
 #include "LCD_Driver.h"
 #include <msp430.h> 
+#include "buttons/button.h"
 
 /*
  * main.c
  */
 int main(void) {
-    WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
+	WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
 
-    char* string= "ECE382 is my favorite class!";
-    initSPI();
-    initLCD();
-    LCDclear();
+	char* string = "ECE382 is my favorite class!";
 
-    writeString(string);
+	initSPI();
+	initLCD();
+	LCDclear();
 
-	while(1) {
+	writeString(string);
 
-	}
+	return 0;
 }

@@ -21,26 +21,22 @@ void initSPI() {
 
 	UCB0CTL1 |= UCSSEL1;
 
-	P1SEL |= BIT5;
-	P1SEL2 |= BIT5;
-	P1SEL |= BIT6;
-	P1SEL2 |= BIT6;
-	P1SEL |= BIT7;
-	P1SEL2 |= BIT7;
+	P1SEL |= BIT5 | BIT6 | BIT7;
+	P1SEL2 |= BIT5 | BIT6 | BIT7;
 
 	UCB0CTL1 &= ~UCSWRST;
+
+	P1DIR |= BIT0;
 
 	SS_Hi();
 
 }
 
 void SS_Hi() {
-	P1DIR |= BIT0;
 	P1OUT |= BIT0;
 }
 
 void SS_Lo() {
-	P1DIR |= BIT0;
 	P1OUT &= ~BIT0;
 }
 
@@ -108,55 +104,55 @@ void LCD_write_8(char byteToSend) {
 
 }
 
-void writeCommandNibble(char comNibble)
-{
-    LCDCON &= ~RS_MASK;
-    LCD_write_4(comNibble);
-    delayLong();
+void writeCommandNibble(char comNibble) {
+	LCDCON &= ~RS_MASK
+	;
+	LCD_write_4(comNibble);
+	delayLong();
 }
 
-void writeCommandByte(char comByte)
-{
-    LCDCON &= ~RS_MASK;
-    LCD_write_8(comByte);
-    delayLong();
+void writeCommandByte(char comByte) {
+	LCDCON &= ~RS_MASK
+	;
+	LCD_write_8(comByte);
+	delayLong();
 }
 
-void writeDataByte(char dataByte)
-{
-    LCDCON |= RS_MASK;
-    LCD_write_8(dataByte);
-    delayLong();
+void writeDataByte(char dataByte) {
+	LCDCON |= RS_MASK
+	;
+	LCD_write_8(dataByte);
+	delayLong();
 }
 
 void initLCD() {
-    writeCommandNibble(0x03);
+	writeCommandNibble(0x03);
 
-    writeCommandNibble(0x03);
+	writeCommandNibble(0x03);
 
-    writeCommandNibble(0x03);
+	writeCommandNibble(0x03);
 
-    writeCommandNibble(0x02);
+	writeCommandNibble(0x02);
 
-    writeCommandByte(0x28);
+	writeCommandByte(0x28);
 
-    writeCommandByte(0x0C);
+	writeCommandByte(0x0C);
 
-    writeCommandByte(0x01);
+	writeCommandByte(0x01);
 
-    writeCommandByte(0x06);
+	writeCommandByte(0x06);
 
-    writeCommandByte(0x01);
+	writeCommandByte(0x01);
 
-    writeCommandByte(0x02);
+	writeCommandByte(0x02);
 
-    SPIsend(0);
-    delayShort();
+	SPIsend(0);
+	delayShort();
 }
 
-void LCDclear()
-{
-    writeCommandByte(1);
+void LCDclear() {
+	writeCommandByte(1);
+
 }
 
 void setCursorLine1() {
@@ -172,7 +168,7 @@ void writeChar(char asciiChar) {
 }
 
 void writeString(char *string) {
-	while(*string != 0) {
+	while (*string != 0) {
 		writeChar(*string);
 		string++;
 	}
