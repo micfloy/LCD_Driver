@@ -168,9 +168,42 @@ void writeChar(char asciiChar) {
 }
 
 void writeString(char *string) {
-	while (*string != 0) {
+	while (string != 0) {
 		writeChar(*string);
 		string++;
+	}
+}
+
+char * printFromPosition(char * start, char * current, int screenSizeInChars) {
+	if (*current == 0) {
+		current = start;
+	}
+	char* dispChar = current;
+	int i;
+	for (i = 0; i < screenSizeInChars; i++) {
+		writeDataByte(*dispChar);
+		dispChar++;
+		if (*dispChar == 0) {
+			dispChar = start;
+		}
+	}
+
+	return current++;
+
+}
+
+void scrollString(char *string1, char *string2, int screenSizeInChars) {
+	char* current1 = string1;
+	char* current2 = string2;
+	int i;
+	while (1) {
+		setCursorLine1();
+		current1 = printFromPosition(string1, current1, screenSizeInChars);
+		setCursorLine2();
+		current2 = printFromPosition(string2, current2, screenSizeInChars);
+		for(i = 0; i < 1500; i++) {
+			delayLong();
+		}
 	}
 }
 

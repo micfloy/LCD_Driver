@@ -22,7 +22,7 @@ void writeChar(char singleChar);
 
 void writeString(char*string);
 
-void scrollString(char*string1, char*string2);
+void scrollString(char*string1, char*string2, int screenSizeInChars);
 
 
 #endif /* LCD_DRIVER_H_ */
