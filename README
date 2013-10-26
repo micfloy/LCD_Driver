@@ -1,2 +1,19 @@
-This is a basic device driver for an LCD display.
-It will allow the user to write to the bottom and top lines of the display and scroll the message across the line.
+Device driver for LCD display on the MSP430.  This LCD display is 2x8 characters.
+
+This library has 8 functions the user may implement.
+
+void initSPI() initializes the MSP430 to interact with the LCD.
+
+void initLCD() initializes the LCD display.
+
+void LCDclear() clears the LCD to be written to.
+
+void setCursorLine1() prepares to write to the top line of the LCD.
+
+void setCursorLine2() prepares to write to the bottom line of the LCD.
+
+void writeChar(char singleChar) writes a character to the LCD display.
+
+void writeString(char*string) writes a string to the LCD display.
+
+void scrollString(char*string1, char*string2, int screenSizeInChars) scrolls two strings across the bottom and top of the LCD display.
