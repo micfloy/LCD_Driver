@@ -32,10 +32,13 @@ void initSPI() {
 
 }
 
+// Sets slave select high.
 void SS_Hi() {
 	P1OUT |= BIT0;
 }
 
+
+// Sets slave select low.
 void SS_Lo() {
 	P1OUT &= ~BIT0;
 }
@@ -50,6 +53,7 @@ void delayLong() {
 	_delay_cycles(1790);
 }
 
+// Configures the MSP430 to send information to the LCD.
 void SPIsend(char byteToSend) {
 	volatile char readByte;
 
@@ -66,7 +70,7 @@ void SPIsend(char byteToSend) {
 	SS_Hi();
 }
 
-//
+//  This code writes a 4-bit piece of information to the LCD.
 void LCD_write_4(char nibbleToSend) {
 	unsigned char sendNibble = nibbleToSend;
 	sendNibble &= 0x0F; 					// Clear the top of the byte
@@ -104,6 +108,7 @@ void LCD_write_8(char byteToSend) {
 
 }
 
+// Accepts a 4-bit command and sends it to the LCD.
 void writeCommandNibble(char comNibble) {
 	LCDCON &= ~RS_MASK
 	;
@@ -111,6 +116,7 @@ void writeCommandNibble(char comNibble) {
 	delayLong();
 }
 
+// Accepts a byte-size command and sends it to the LCD.
 void writeCommandByte(char comByte) {
 	LCDCON &= ~RS_MASK
 	;
@@ -118,6 +124,7 @@ void writeCommandByte(char comByte) {
 	delayLong();
 }
 
+// Writes a byte-sized piece of Data to the LCD.
 void writeDataByte(char dataByte) {
 	LCDCON |= RS_MASK
 	;
@@ -125,6 +132,7 @@ void writeDataByte(char dataByte) {
 	delayLong();
 }
 
+// Initializes the LCD to work with the MSP430.
 void initLCD() {
 	writeCommandNibble(0x03);
 
@@ -150,41 +158,48 @@ void initLCD() {
 	delayShort();
 }
 
+// Clears the LCD and sets the cursor to the beginning of the first line.
 void LCDclear() {
 	writeCommandByte(1);
 
 }
 
+// Sets the cursor to the beginning of the first line without clearing the display.
 void setCursorLine1() {
 	writeCommandByte(0x02);
 }
 
+// Sets the cursor to line 2 without clearing the display.
 void setCursorLine2() {
 	writeCommandByte(0xC0);
 }
 
+// Writes a single character to the LCD.
 void writeChar(char asciiChar) {
 	writeDataByte(asciiChar);
 }
 
+// Writeds a string of characters to the LCD.
 void writeString(char *string) {
 	char *current = string;
-	while (*current != 0) {
+	while (*current != 0) 				// Prints characters until the loop reaches the end of the string.
+	{
 		writeChar(*current);
 		current++;
 	}
 }
 
+// Helper function to the scroll string.  Returns an incremented current pointer.
 char * printFromPosition(char * start, char * current, int screenSizeInChars) {
-	if (*current == 0) {
+	if (*current == 0) {				// Resets the current pointer to the first place in the string.
 		current = start;
 	}
-	char* dispChar = current;
+	char* dispChar = current;			// Temporary pointer.
 	int i;
 	for (i = 0; i < screenSizeInChars; i++) {
 		writeDataByte(*dispChar);
 		dispChar++;
-		if (*dispChar == 0) {
+		if (*dispChar == 0) {			// Resets temporary pointer to the first place in the string.
 			dispChar = start;
 		}
 	}
@@ -193,11 +208,12 @@ char * printFromPosition(char * start, char * current, int screenSizeInChars) {
 
 }
 
+// Scrolls two strings across the bottom and top of the LCD display.
 void scrollString(char *string1, char *string2, int screenSizeInChars) {
 	char* current1 = string1;
 	char* current2 = string2;
 	int i;
-	while (1) {
+	while (1) {							// Infinitely scrolls both strings.
 		setCursorLine1();
 		current1 = printFromPosition(string1, current1, screenSizeInChars);
 		setCursorLine2();

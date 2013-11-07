@@ -22,31 +22,39 @@ int main(void) {
 
 	char buttons[] = {BIT1, BIT2, BIT3};
 
+	// Initialize.
 	initSPI();
 	initLCD();
 	LCDclear();
 
+	// Print first screen.
 	writeString(string1);
 	setCursorLine2();
 	writeString(string2);
 
+	// Configure push buttons.
 	configureP1PinAsButton(BIT1|BIT2|BIT3);
 
+	// Poll buttons
 	char buttonPressed = pollP1Buttons(buttons, 3);
 	LCDclear();
 
 	switch (buttonPressed) {
+
 	            case BIT1:
 
 	            	scrollString(string3, message1, LCD_SIZE);
 	                waitForP1ButtonRelease(BIT1);
-
 	                break;
+
 	            case BIT2:
+
 	            	scrollString(string3, message2, LCD_SIZE);
 	                waitForP1ButtonRelease(BIT2);
 	                break;
+
 	            case BIT3:
+
 	            	scrollString(string3, message3, LCD_SIZE);
 	                waitForP1ButtonRelease(BIT3);
 	                break;

@@ -1,8 +1,10 @@
 /*
  * LCD_Driver.h
  *
+ *  Author: C2C Michael Bentley
  *  Created on: Oct 23, 2013
- *      Author: C15Michael.Bentley
+ *
+ *  Description:  This library allows the user to print and scroll strings of characters to an LCD display.
  */
 
 #ifndef LCD_DRIVER_H_
